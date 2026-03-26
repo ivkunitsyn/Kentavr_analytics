@@ -1,0 +1,22 @@
+[app]
+default_country = "Россия"
+default_mode = "manual"
+
+[paths]
+data_dir = "data"
+prompts_dir = "prompts"
+
+[providers.openai]
+api_key = "YOUR_OPENAI_API_KEY_HERE"
+base_url = ""
+model = "gpt-4.1"
+
+[providers.deepseek]
+api_key = "YOUR_DEEPSEEK_API_KEY_HERE"
+base_url = ""
+model = "deepseek-chat"
+
+[providers.qwen]
+api_key = "YOUR_QWEN_API_KEY_HERE"
+base_url = ""
+model = "qwen-plus"

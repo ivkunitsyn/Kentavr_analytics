@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "news-forecast-orchestrator"
+version = "0.1.0"
+description = "Пошаговый CLI-оркестратор сценарного прогнозирования новостных заголовков и лидов"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Codex" }]
+dependencies = [
+  "openai>=1.40.0",
+]
+
+[project.scripts]
+news-forecast-orchestrator = "news_forecast_orchestrator.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
