@@ -87,6 +87,20 @@ def format_step4_summary(parsed: dict) -> str:
     return "\n".join(lines)
 
 
+def format_step5_summary(parsed: dict) -> str:
+    top3 = parsed.get("top3", [])
+    lines = ["# Резюме шага 5 (редакционная комиссия)", ""]
+    if top3:
+        lines.append("Топ-3 варианта по версии комиссии:")
+        for idx, item in enumerate(top3, start=1):
+            lines.append(f"- {idx}. {item}")
+    else:
+        lines.append("Топ-3 не удалось извлечь автоматически. Проверьте raw-ответ.")
+    lines.append("")
+    lines.append("Следующее действие: выполните ручную экспертную оценку и выберите финальные варианты.")
+    return "\n".join(lines)
+
+
 def format_summary(step: str, parsed: dict) -> str:
     if step == "step1":
         return format_step1_summary(parsed)
@@ -96,6 +110,8 @@ def format_summary(step: str, parsed: dict) -> str:
         return format_step3_summary(parsed)
     if step == "step4":
         return format_step4_summary(parsed)
+    if step == "step5":
+        return format_step5_summary(parsed)
     return "# Резюме\n\nНет форматтера для указанного шага."
 
 
@@ -127,5 +143,12 @@ def format_next_instruction(step: str, provider: str = "openai") -> str:
             "1. Отправьте `prompt_openai.txt`, `prompt_deepseek.txt`, `prompt_qwen.txt` в соответствующие модели.\n"
             "2. Загрузите каждый ответ через `ingest-response --step step4 --provider <openai|deepseek|qwen>`.\n"
             "3. Выполните `compare` для единого сравнительного блока."
+        )
+    if step == "step5":
+        return (
+            "Что дальше:\n"
+            "1. Отправьте `step5/prompt_openai.txt` в OpenAI.\n"
+            "2. Загрузите ответ через `ingest-response --step step5 --provider openai`.\n"
+            "3. Проведите ручную экспертную оценку и выберите финальный набор."
         )
     return "Что дальше: продолжайте следующий шаг пайплайна."

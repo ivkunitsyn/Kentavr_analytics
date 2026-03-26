@@ -1,6 +1,6 @@
 [app]
 default_country = "Россия"
-default_mode = "manual"
+default_mode = "api"
 
 [paths]
 data_dir = "data"

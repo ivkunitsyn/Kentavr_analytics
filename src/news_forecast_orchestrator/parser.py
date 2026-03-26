@@ -322,6 +322,31 @@ def parse_step4(raw_text: str, model_name: str, outlet_name: str, event_id: str,
     }
 
 
+def parse_step5(raw_text: str, provider: str) -> dict:
+    payload = _maybe_json(raw_text)
+    if isinstance(payload, dict):
+        payload.setdefault("provider", provider)
+        return payload
+
+    ranking: list[str] = []
+    for line in _clean_lines(raw_text):
+        m_place = re.match(r"^\d+\s*место\s*:\s*(.+)$", line, flags=re.IGNORECASE)
+        if m_place:
+            ranking.append(m_place.group(1).strip())
+            continue
+        m_numbered = re.match(r"^\d+[.)]\s*(.+)$", line)
+        if m_numbered and len(ranking) < 7:
+            ranking.append(m_numbered.group(1).strip())
+
+    return {
+        "provider": provider,
+        "final_review": raw_text.strip(),
+        "ranking_candidates": ranking[:10],
+        "top3": ranking[:3],
+        "raw_text_fallback": True,
+    }
+
+
 def parse_by_step(step: str, raw_text: str, provider: str, context: dict[str, str] | None = None) -> dict:
     context = context or {}
     if step == "step1":
@@ -338,4 +363,6 @@ def parse_by_step(step: str, raw_text: str, provider: str, context: dict[str, st
             event_id=context.get("event_id", ""),
             scenario_type=context.get("scenario_type", ""),
         )
+    if step == "step5":
+        return parse_step5(raw_text, provider=provider)
     raise ValueError(f"Неизвестный шаг для парсинга: {step}")

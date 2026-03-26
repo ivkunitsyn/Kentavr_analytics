@@ -112,7 +112,7 @@ def load_settings(config_path: str | None = None) -> AppSettings:
 
     app_cfg = config_data.get("app", {})
     default_country = str(app_cfg.get("default_country", "Россия"))
-    default_mode = str(app_cfg.get("default_mode", "manual"))
+    default_mode = str(app_cfg.get("default_mode", "api"))
 
     path_settings = PathSettings(
         project_root=project_root,

@@ -29,6 +29,9 @@ class PromptLibrary:
     def step4_comparison(self) -> str:
         return self._read("step4_comparison.md")
 
+    def step5_editorial_committee(self) -> str:
+        return self._read("step5_editorial_committee.md")
+
 
 class _SafeFormatDict(dict):
     def __missing__(self, key: str) -> str:
